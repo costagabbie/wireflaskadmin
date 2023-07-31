@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+<h3>{{ language_strings['MENU_MANAGE_PEER'] }}</h3>
+<hr/>
+</div>
+<div class="row">
+  <a class="btn btn-primary"href="{{ url_for('main.add_peer')}}"> {{ language_strings['MANAGE_PEER_ADD'] }}</a>
+</div>
+<div class="row">
+<table class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <th scope="col">{{ language_strings['MANAGE_PEER_NAME'] }}</th>
+    <th scope="col">{{ language_strings['MANAGE_PEER_NEW_ALLOWEDIP'] }}</th>
+    <th scope="col">{{ language_strings['MANAGE_PEER_NEW_ENDPOINTIP'] }}</th>
+    <th scope="col"> ... </th>
+  </thead>
+  <tbody>
+    {% if peers %}
+    {% for peer in peers.items %}
+      <tr>
+      <th scope="row">{{ peer.name }}</th>
+      <th>{{ peer.address }}<small class="text-muted">{{ peer.ip_address }}</th>
+      <th>{{ peer.endpoint_name() }}</small></th>
+      <th><a class="btn btn-warning" href="{{ url_for('main.edit_peer',id=peer.id) }}">{{ language_strings['MANAGE_PEER_EDIT'] }}</a></th>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <th scope="row">{{ language_strings['MANAGE_PEER_LISTENPORT'] }}</th>  
+    {% endif %}
+  </tbody> 
+</table>
+</div>
+<div class="row">
+  <div class="col-sm8">
+  {% if peers %}
+    {% for page_num in peers.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if peers.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('main.list_peer', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('main.list_peer', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  </div>
+
+</div>
+{% endblock content %}

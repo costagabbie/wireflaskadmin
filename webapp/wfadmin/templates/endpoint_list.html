@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+<h3>{{ language_strings['MENU_MANAGE_ENDPOINT'] }}</h3>
+<hr/>
+</div>
+<div class="row">
+  <a class="btn btn-primary"href="{{ url_for('main.add_endpoint')}}"> {{ language_strings['MANAGE_ENDPOINT_ADD'] }}</a>
+</div>
+<div class="row">
+<table class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <th scope="col">{{ language_strings['MANAGE_ENDPOINT_NAME'] }}</th>
+    <th scope="col">{{ language_strings['MANAGE_ENDPOINT_ADDRESS'] }}</th>
+    <th scope="col">{{ language_strings['MANAGE_ENDPOINT_LISTENPORT'] }}</th>
+    <th scope="col"> ... </th>
+  </thead>
+  <tbody>
+    {% if endpoints %}
+    {% for endpoint in endpoints.items %}
+      <tr>
+      <th scope="row">{{ endpoint.name }}<small class="text-muted">wg{{ endpoint.id }}</small></th>
+      <th>{{ endpoint.address }}<small class="text-muted">{{ endpoint.ip_address }}</small></th>
+      <th>{{ endpoint.listen_port }}</th>
+      <th>
+        <a class="btn btn-secondary" href="{{ url_for('main.edit_endpoint',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_EDIT'] }}</a>
+        <a class="btn btn-success" href="{{ url_for('main.start_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_START'] }}</a>
+        <a class="btn btn-danger" href="{{ url_for('main.stop_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_STOP'] }}</a>
+        <a class="btn btn-info" href="{{ url_for('main.restart_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_RESTART'] }}</a>
+        <a class="btn btn-warning" href="{{ url_for('main.rebuild_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_REBUILD'] }}</a>
+      </th>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <th scope="row">{{ language_strings['MANAGE_ENDPOINT_LISTENPORT'] }}</th>  
+    {% endif %}
+  </tbody> 
+</table>
+</div>
+<div class="row">
+  <div class="col-sm8">
+  {% if endpoints %}  
+    {% for page_num in endpoints.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if endpoints.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('main.list_endpoint', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('main.list_endpoint', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  </div>
+  
+</div>
+{% endblock content %}

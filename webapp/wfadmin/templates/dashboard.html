@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h6>{{ language_strings['UPTIME'] }}</h6>
+        <p>{{ uptime }}</p>
+      </div>
+      <div class="col-sm">
+        <h6>{{ language_strings['LOAD_AVG'] }}</h6>
+        <p>{{ load_avg }}</p>
+      </div>
+      <div class="col-sm">
+        <h6>{{ language_strings['DASHBOARD_PEER_COUNT'] }}</h6>
+        <p>{{ peer_count }}</p>
+      </div>
+      <div class="col-sm">
+        <h6>{{ language_strings['DASHBOARD_ENDPOINT_COUNT'] }}</h6>
+        <p>{{ endpoint_count }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <h6>Network Interfaces</h6>
+      <p>{{ ifaces|safe }}</p>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <h6>{{ language_strings['DASHBOARD_ACTIONS_TITLE'] }}</h6>
+        <a class="btn btn-success" href="{{ url_for('main.start_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_START'] }}</a>
+        <a class="btn btn-danger" href="{{ url_for('main.stop_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_STOP'] }}</a>
+        <a class="btn btn-info" href="{{ url_for('main.restart_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_RESTART'] }}</a>
+        <a class="btn btn-warning" href="{{ url_for('main.rebuild_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_REBUILD'] }}</a>
+      </div>
+    </div>
+  </div>
+{% endblock content%}
