@@ -1,5 +1,6 @@
 import signal
 import socket
+from select import select
 from os import system,path
 import sys
 import pickle
@@ -8,7 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from wgflaskd.config import Config
 from wgflaskd.models import Endpoint,Peer,create_metadata
-sys.path.append('../common')
+sys.path.append('../')
 from common.types import CommandPacket, DaemonCommandType
 
 print(f'{Config.SQLALCHEMY_DATABASE_URI}, {Config.DAEMON_HOST}, {Config.DAEMON_PORT}')
@@ -146,32 +147,33 @@ def main():
         handle_packet(CommandPacket(DaemonCommandType.CMD_REBUILD,0))
         handle_packet(CommandPacket(DaemonCommandType.CMD_RESTART,0))
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.setblocking(False)
     server_socket.bind((Config.DAEMON_HOST, int(Config.DAEMON_PORT)))
+    server_socket.listen(5)
     while not sighandler.terminate:
         print("Waiting for connection")
-        server_socket.listen() 
-        client_connection,addr = server_socket.accept() 
-        print(f"Connection from {addr} accepted")
+        sockets_list = [server_socket]
+        clients = {}
         while True:
-            data_recv = client_connection.recv(1024) 
-            if data_recv:
-                try:
-                    print(data_recv)
-                    if handle_packet(pickle.loads(data_recv)):
-                        client_connection.send(str("OK").encode())
-                        client_connection.close()
-                        break
+            readable_sockets,_,_  = select(sockets_list,[],[])
+            for notified_socket in readable_sockets:
+                if notified_socket == server_socket:
+                    client_socket, client_address = server_socket.accept()
+                    client_socket.setblocking(False)
+                    print(f"New connection established from {client_address}")
+                    sockets_list.append(client_socket)
+                    clients[client_socket] = client_address
+                else:
+                    data = notified_socket.recv(1024)
+                    if not data:
+                        print(f"Connection closed by {clients[notified_socket]}")
+                        sockets_list.remove(notified_socket)
+                        del clients[notified_socket]
                     else:
-                        client_connection.send(str("KO").encode())
-                        client_connection.close()
-                        break
-                except BrokenPipeError:
-                    print("Failed to send data")
-                except TypeError:
-                    print("Malformed request")
-                    client_connection.close()
-
-
-            
+                        # Process the received data here
+                        print(f"Received data from {clients[notified_socket]}: {data}")
+                        handle_packet(pickle.loads(data))
+          
 if __name__ == '__main__':
     main()

@@ -1,5 +1,4 @@
 import urllib
-import sys
 from pamela import authenticate, PAMError
 from subprocess import check_output
 from datetime import datetime
@@ -9,9 +8,8 @@ from wfadmin import db, bcrypt
 from wfadmin.config import Config
 from wfadmin.models import User, UserLogin, Endpoint, Peer
 from wfadmin.main.forms import LoginForm, EndpointForm, PeerForm
-from wfadmin.main.utils import SendCommand, DaemonCommandType
+from wfadmin.main.utils import SendCommand
 from wfadmin.translations.default import strings
-sys.path.append('../../../common')
 from common.types import CommandPacket, DaemonCommandType
 
 main = Blueprint("main", __name__)
@@ -26,7 +24,7 @@ def dashboard():
     s = check_output("uptime").decode("utf-8")
     # Do the string manipulation magic
     uptime = s.split("  ")[0]
-    load_avg = s.split("  ")[3].split(":")[1][0:-1]
+    load_avg = 0#s.split("  ")[3].split(":")[1][0:-1]
     # Get the amount of peers that we have
     peer_count = db.session.query(Peer).count()
     endpoint_count = db.session.query(Endpoint).count()

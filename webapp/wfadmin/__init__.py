@@ -5,7 +5,8 @@ from flask_login import LoginManager
 from wfadmin.config import Config
 from wfadmin.translations.default import strings
 from os import path, system
-
+import sys
+sys.path.append('../')
 
 # The stuff that the app needs
 db = SQLAlchemy()

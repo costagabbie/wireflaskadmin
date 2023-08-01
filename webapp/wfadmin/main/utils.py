@@ -5,7 +5,6 @@ import socket
 import pickle
 from dataclasses import dataclass
 import sys
-sys.path.append('../../../common')
 from common.types import CommandPacket, DaemonCommandType
 
 def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
@@ -15,15 +14,9 @@ def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
         remote_ip = socket.gethostbyname(Config.DAEMON_HOST)
         s.connect((remote_ip, int(Config.DAEMON_PORT)))
         s.sendall(pickle.dumps(CommandPacket(cmd_type,iface)))
-        while True:
-            response = s.recv(1024)
-            if response:
-                break
         s.close()
-        return response == "OK"
+        return True
     except socket.error:
-        print("Could not create the socket")
         return False
     except socket.gaierror:
-        print("Hostname could not be resolved. Exiting")
         return False
