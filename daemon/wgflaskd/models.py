@@ -12,6 +12,7 @@ class Endpoint(Base):
     name = Column(String(20), unique=True, nullable=False)
     address = Column(String(45), unique=True, nullable=False)
     netmask = Column(Integer, nullable=False, default=32)
+    public_key = Column(String(45))
     listen_port = Column(Integer, unique=True, nullable=False)
     ip_address = Column(String(45), nullable=False)
     dns = Column(String(91))

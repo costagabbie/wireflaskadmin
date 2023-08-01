@@ -36,6 +36,7 @@ class Endpoint(db.Model):
     name = db.Column(db.String(20), unique=True, nullable=False)
     address = db.Column(db.String(45), unique=True, nullable=False)
     netmask = db.Column(db.Integer, nullable=False, default=32)
+    public_key = db.Column(db.String(45))
     listen_port = db.Column(db.Integer, unique=True, nullable=False)
     ip_address = db.Column(db.String(45), nullable=False)
     dns = db.Column(db.String(91))
