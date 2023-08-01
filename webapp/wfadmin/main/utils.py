@@ -24,10 +24,13 @@ def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
         packet = CommandPacket(cmd_type, iface)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         remote_ip = socket.gethostbyname(Config.DAEMON_HOST)
-        s.connect((remote_ip, Config.DAEMON_PORT))
-        data = pickle.dumps(packet)
-        s.sendall(data)
-        response = s.recv(2)
+        s.connect((remote_ip, int(Config.DAEMON_PORT)))
+        data = f'{cmd_type},{iface}'
+        s.sendall(data.encode())
+        while True:
+            response = s.recv(1024)
+            if response:
+                break
         s.close()
         return response == "OK"
     except socket.error:

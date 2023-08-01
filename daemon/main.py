@@ -140,6 +140,7 @@ PublicKey={peer.public_key}
 
 
 def handle_packet(packet:CommandPacket)->bool:
+    print(packet)
     #If we are controlling a specific interface
     if packet.Interface > 0:
         return control_interface(packet.CommandType,packet.Interface)
@@ -170,7 +171,8 @@ def main():
             data_recv = client_connection.recv(1024) 
             if data_recv:
                 try:
-                    if handle_packet(pickle.loads(data_recv)):
+                    print(data_recv)
+                    if handle_packet(CommandPacket(int(data_recv.decode('utf-8').split(',')[0]),int(data_recv.decode('utf-8').split(',')[1]))):
                         client_connection.send(str("OK").encode())
                         client_connection.close()
                         break
@@ -178,12 +180,11 @@ def main():
                         client_connection.send(str("KO").encode())
                         client_connection.close()
                         break
-                except pickle.UnpicklingError:
-                    client_connection.send(str("KO").encode())
-                    client_connection.close()
-                    break
                 except BrokenPipeError:
                     print("Failed to send data")
+                except TypeError:
+                    print("Malformed request")
+                    client_connection.close()
 
 
             
