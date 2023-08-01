@@ -2,7 +2,9 @@
 ## Project description
 Minimal wireguard configuration /management webapp.
 
-The project is split into two parts(possibly three), the webapp and the daemon(and possibly an api agent); the webapp should run as a normal user, since it's not a good idea to run a internet facing application as root; however the daemon is the part that manage wireguard configs, and the wg-quick services and it should run a root(because the daemon needs the privileges to read and write to /etc/wireguard and execute systemctl commands to manage the services).
+The project is split into two parts(possibly three), the webapp and the daemon(and possibly an api agent)
+
+The webapp should run as a normal user, since it's not a good idea to run a internet facing application as root, however the daemon is the part that manage wireguard configs, and the wg-quick services and it should run as root(because the daemon needs the privileges to read and write to /etc/wireguard and execute systemctl commands to manage the services).
 ## Project status
 It's in early development stage, the webapp is pretty much done, lacking only the API, some UI/UX refinements, and also some extensive testing, and the daemon is implemented but need to be properly tested and possibly some work on exception handling.
 Feel free to contribute to the project, either with python code, unit tests, or html/css/js or even translating or improving this readme file, or even documentation.
