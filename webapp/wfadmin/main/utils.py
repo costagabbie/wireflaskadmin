@@ -6,19 +6,6 @@ import pickle
 from dataclasses import dataclass
 
 
-class DaemonCommandType(Enum):
-    CMD_START = 0
-    CMD_STOP = 1
-    CMD_RESTART = 2
-    CMD_REBUILD = 3
-
-
-@dataclass
-class CommandPacket:
-    CommandType: int
-    Interface: int
-
-
 def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
     try:
         packet = CommandPacket(cmd_type, iface)

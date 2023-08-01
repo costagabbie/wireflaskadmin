@@ -1,8 +1,6 @@
 import signal
 import socket
 from os import system,path
-from enum import Enum
-from dataclasses import dataclass
 import pickle
 from subprocess import check_output
 from sqlalchemy import create_engine
@@ -16,22 +14,6 @@ engine = create_engine(url=Config.SQLALCHEMY_DATABASE_URI)
 create_metadata(engine)
 Session = sessionmaker(bind=engine)
 db = Session()
-
-#Classes
-@dataclass
-class CommandPacket:
-    CommandType: int
-    Interface: int
-
-
-class DaemonCommandType(Enum):
-    CMD_START = 0
-    CMD_STOP = 1
-    CMD_RESTART = 2
-    CMD_REBUILD = 3
-    CMD_ENABLE = 4
-    CMD_DISABLE = 5
-
 
 class DaemonSignalHandler:
   terminate = False
