@@ -1,4 +1,5 @@
 import urllib
+import sys
 from pamela import authenticate, PAMError
 from subprocess import check_output
 from datetime import datetime
@@ -10,7 +11,8 @@ from wfadmin.models import User, UserLogin, Endpoint, Peer
 from wfadmin.main.forms import LoginForm, EndpointForm, PeerForm
 from wfadmin.main.utils import SendCommand, DaemonCommandType
 from wfadmin.translations.default import strings
-
+sys.path.append('../../../common')
+from common.types import CommandPacket, DaemonCommandType
 
 main = Blueprint("main", __name__)
 

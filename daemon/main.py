@@ -1,12 +1,15 @@
 import signal
 import socket
 from os import system,path
+import sys
 import pickle
 from subprocess import check_output
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from wgflaskd.config import Config
 from wgflaskd.models import Endpoint,Peer,create_metadata
+sys.path.append('../common')
+from common.types import CommandPacket, DaemonCommandType
 
 print(f'{Config.SQLALCHEMY_DATABASE_URI}, {Config.DAEMON_HOST}, {Config.DAEMON_PORT}')
 #SQLAlchemy Stuff
@@ -154,7 +157,7 @@ def main():
             if data_recv:
                 try:
                     print(data_recv)
-                    if handle_packet(CommandPacket(int(data_recv.decode('utf-8').split(',')[0]),int(data_recv.decode('utf-8').split(',')[1]))):
+                    if handle_packet(pickle.loads(data_recv)):
                         client_connection.send(str("OK").encode())
                         client_connection.close()
                         break

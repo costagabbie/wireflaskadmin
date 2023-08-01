@@ -4,7 +4,9 @@ from enum import Enum
 import socket
 import pickle
 from dataclasses import dataclass
-
+import sys
+sys.path.append('../../../common')
+from common.types import CommandPacket, DaemonCommandType
 
 def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
     try:
@@ -12,8 +14,7 @@ def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         remote_ip = socket.gethostbyname(Config.DAEMON_HOST)
         s.connect((remote_ip, int(Config.DAEMON_PORT)))
-        data = f'{cmd_type},{iface}'
-        s.sendall(data.encode())
+        s.sendall(pickle.dumps(CommandPacket(cmd_type,iface)))
         while True:
             response = s.recv(1024)
             if response:
