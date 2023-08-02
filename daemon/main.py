@@ -89,7 +89,7 @@ def create_config(iface:int)->bool:
     try:
         with open(f'/etc/wireguard/wg{iface}-privatekey','r') as pubkey_file:
             publickey = pubkey_file.readline()
-            if len(endpoint.public_key) == 0:
+            if endpoint.public_key is None:
                 endpoint.public_key = publickey
                 db.commit()
     except OSError as e:
