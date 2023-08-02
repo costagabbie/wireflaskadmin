@@ -56,14 +56,14 @@ def create_config(iface:int)->bool:
     peers = db.query(Peer).filter_by(endpoint=endpoint.id).all()
     if not path.exists(f'/etc/wireguard/wg{iface}-privatekey'):
         create_keypair(iface)
-    with open(f'wg{iface}-privatekey','r') as privkey_file:
+    with open(f'/etc/wireguard/wg{iface}-privatekey','r') as privkey_file:
         privatekey = privkey_file.readline()
-    with open(f'wg{iface}-privatekey','r') as pubkey_file:
+    with open(f'/etc/wireguard/wg{iface}-privatekey','r') as pubkey_file:
         publickey = pubkey_file.readline()
         if len(endpoint.public_key) == 0:
             endpoint.public_key = publickey
             db.commit() 
-    with open(f'wg{iface}.conf','w') as config_file:
+    with open(f'/etc/wireguard/wg{iface}.conf','w') as config_file:
         write_endpoint(config_file,privatekey,endpoint)
         #Now we go to the peers if we have any
         if peers:
