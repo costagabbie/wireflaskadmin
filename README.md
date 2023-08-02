@@ -80,6 +80,8 @@ Pro Tip: You can also make a symlink of it for the daemon/ directory
     ExecStart=/path/to/wireflaskadmin/daemon/.venv/bin/python3 main.py
     Restart=always
     RestartSec=10
+    StandardOutput=journal
+    StandardError=journal
     [Install]
     WantedBy=multi-user.target
 ```
@@ -97,6 +99,8 @@ Note that you need to adjust the path to your needs both on **WorkingDirectory**
     ExecStart=/path/to/wireflaskadmin/webapp/.venv/bin/gunicorn -w 3 app:app
     Restart=always
     RestartSec=10
+    StandardOutput=journal
+    StandardError=journal
     [Install]
     WantedBy=multi-user.target
 ```
