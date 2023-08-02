@@ -6,6 +6,16 @@ from datetime import datetime
 
 Base = declarative_base()
 
+class User(Base):
+    id = Column(Integer, primary_key=True)
+    username = Column(String(20), unique=True, nullable=False)
+    password = Column(String(60), nullable=False)
+    date_creation = Column(DateTime, nullable=False, default=datetime.utcnow())
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.password}', '{self.date_creation}')"
+
+
 class Endpoint(Base):
     __tablename__='endpoint'
     id = Column(Integer, primary_key=True)
