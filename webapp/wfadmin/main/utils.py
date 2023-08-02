@@ -1,11 +1,7 @@
 from wfadmin.config import Config
-from wfadmin.translations.default import strings
-from enum import Enum
 import socket
-import pickle
 from dataclasses import dataclass
-import sys
-from common.types import CommandPacket, DaemonCommandType
+from common.types import CommandPacket, DaemonCommandType,command_packet_to_str
 
 def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
     try:
@@ -13,7 +9,7 @@ def SendCommand(cmd_type: DaemonCommandType, iface: int) -> bool:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         remote_ip = socket.gethostbyname(Config.DAEMON_HOST)
         s.connect((remote_ip, int(Config.DAEMON_PORT)))
-        s.sendall(pickle.dumps(CommandPacket(cmd_type,iface)))
+        s.sendall(command_packet_to_str(packet).encode('utf-8'))
         s.close()
         return True
     except socket.error:
