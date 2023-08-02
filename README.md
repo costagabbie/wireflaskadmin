@@ -4,7 +4,7 @@ Minimal wireguard configuration /management webapp.
 
 The project is split into two parts(possibly three), the webapp and the daemon(and possibly an api agent)
 
-The webapp should run as a normal user, since it's not a good idea to run a internet facing application as root, however the daemon is the part that manage wireguard configs, and the wg-quick services and it should run as root(because the daemon needs the privileges to read and write to /etc/wireguard and execute systemctl commands to manage the services).
+The webapp should run as a normal user, since it's not a good idea to run an internet facing application as root, however the daemon is the part that manage wireguard configs, and the wg-quick services and it should run as root(because the daemon needs the privileges to read and write to /etc/wireguard and execute systemctl commands to manage the services).
 ## Project status
 It's in early development stage, the webapp is pretty much done, lacking only the API, some UI/UX refinements, and also some extensive testing, and the daemon is implemented but need to be properly tested and possibly some work on exception handling.
 Feel free to contribute to the project, either with python code, unit tests, or html/css/js or even translating or improving this readme file, or even documentation.
@@ -12,7 +12,7 @@ Feel free to contribute to the project, either with python code, unit tests, or 
 ### Endpoint Management
 Have entries for each endpoint(wireguard interface) that you host, private keys and pubkeys are created by the daemon with its own interface config, and only the pubkey is available for the webapp for security reasons.
 ### Peer Management
-Each peer is linked to a endpoint, and you can manage each one of them, and once you tell the daemon to rebuild the configuration it will rebuild and restart the interface(s).
+Each peer is linked to an endpoint, and you can manage each one of them, and once you tell the daemon to rebuild the configuration it will rebuild and restart the interface(s).
 ### Authentication
 The authentication to change the configurations are provided by PAM, if someone wants to add support to LDAP please feel free to contribute.
 ## Planned Features
@@ -77,7 +77,7 @@ Pro Tip: You can also make a symlink of it for the daemon/ directory
     [Service]
     WorkingDirectory=/path/to/wireflaskadmin/daemon
     User=root
-    ExecStart/path/to/wireflaskadmin/daemon/.venv/bin/python3 main.py
+    ExecStart=/path/to/wireflaskadmin/daemon/.venv/bin/python3 main.py
     Restart=always
     RestartSec=10
     [Install]
@@ -85,7 +85,7 @@ Pro Tip: You can also make a symlink of it for the daemon/ directory
 ```
 -Save it on `/etc/systemd/system/wgflaskd.service`
 Note that you need to adjust the path to your needs both on **WorkingDirectory** and **ExecStart**
-### Creating a systemd unit to automatically start the daemon
+### Creating a systemd unit to automatically start the webapp
 ```
     [Unit]
     Description=WireFlaskAdmin WebApp
@@ -94,7 +94,7 @@ Note that you need to adjust the path to your needs both on **WorkingDirectory**
     [Service]
     WorkingDirectory=/path/to/wireflaskadmin/webapp
     User=youruser
-    ExecStart/path/to/wireflaskadmin/webapp/.venv/bin/gunicorn -w 3 run:app
+    ExecStart=/path/to/wireflaskadmin/webapp/.venv/bin/gunicorn -w 3 app:app
     Restart=always
     RestartSec=10
     [Install]
