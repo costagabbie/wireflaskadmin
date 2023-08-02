@@ -3,14 +3,13 @@ import socket
 from select import select
 from os import system,path
 import sys
-import pickle
 from subprocess import check_output
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from wgflaskd.config import Config
 from wgflaskd.models import Endpoint,Peer,create_metadata
 sys.path.append('../')
-from common.types import CommandPacket, DaemonCommandType
+from common.types import CommandPacket, DaemonCommandType,str_to_command_packet
 
 
 #SQLAlchemy Stuff
@@ -169,7 +168,8 @@ def main():
                     else:
                         # Processing the command received
                         print(f"Received data from {clients[notified_socket]}")
-                        handle_packet(pickle.loads(data))
+                        #handle_packet(str_to_command_packet(data.decode('utf-8')))
+                        print(str_to_command_packet(data.decode('utf-8')))
         except socket.error as e:
             print(e.strerror)
     print("Exiting")
