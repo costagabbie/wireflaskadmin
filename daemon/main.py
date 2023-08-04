@@ -87,12 +87,15 @@ def create_config(iface:int)->bool:
     peers = db.query(Peer).filter_by(endpoint=endpoint.id).all()
     logger.debug(peers)
     if is_interface_running(iface):
+        logger.info(f'stopping wg{iface}')
         control_interface(DaemonCommandType.CMD_STOP,iface)
     if is_interface_enabled(iface):
+        logger.info(f'disabling wg{iface}')
         control_interface(DaemonCommandType.CMD_DISABLE,iface)
     if not path.exists(f'/etc/wireguard/wg{iface}-privatekey'):
         create_keypair(iface)
     if path.exists(f'/etc/wireguard/wg{iface}.conf'):
+        logger.info(f'removing /etc/wireguard/wg{iface}.conf')
         unlink(f'/etc/wireguard/wg{iface}.conf')
     try:
         with open(f'/etc/wireguard/wg{iface}-privatekey','r') as privkey_file:
@@ -120,7 +123,7 @@ def create_config(iface:int)->bool:
                 for peer in peers:
                     write_peer(config_file,peer)
             control_interface(DaemonCommandType.CMD_ENABLE,iface)
-            logging.info(f'Log saved to /etc/wireguard/wg{iface}.conf')
+            logging.info(f'Config saved to /etc/wireguard/wg{iface}.conf')
         return True
     except OSError as e:
         logger.error(f'Failed to write wireguard configuration file:{e}')
