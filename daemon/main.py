@@ -21,7 +21,6 @@ from common.types import CommandPacket, DaemonCommandType,str_to_command_packet
 engine = create_engine(url=Config.SQLALCHEMY_DATABASE_URI)
 create_metadata(engine)
 Session = sessionmaker(bind=engine)
-db = Session()
 
 logger = logging.getLogger()
 handler = RotatingFileHandler('/var/log/wgflaskd.log', maxBytes=1024000,backupCount=5)
@@ -80,6 +79,7 @@ def create_keypair(iface:int)->bool:
 
 
 def create_config(iface:int)->bool:
+    db = Session()
     endpoint = db.query(Endpoint).filter_by(id=iface).first()
     logger.debug(endpoint)
     if not endpoint:
@@ -188,6 +188,7 @@ def handle_packet(packet:CommandPacket)->bool:
         return success
     #If we are not controlling a specific interface we iterate through
     #every single endpoint available and perform the action
+    db = Session()
     endpoints = db.query(Endpoint).all()
     #If any interface fail to be controlled, we return false
     success = True
