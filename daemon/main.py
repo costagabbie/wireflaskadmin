@@ -6,7 +6,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from select import select
-from os import system,path
+from os import system,path,unlink
 from subprocess import check_output,CalledProcessError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -62,8 +62,12 @@ def control_interface(action:DaemonCommandType,iface:int)->bool:
             logging.debug(f'control_interface executed :systemctl disable wg-quick@wg{iface}')
             return system(f'systemctl disable wg-quick@wg{iface}') == 0
 
-def is_interface_enabled(iface:str)->bool:
+def is_interface_enabled(iface:int)->bool:
     return system(f'systemctl is-enabled wg-quick@wg{iface}') == 0
+
+
+def is_interface_running(iface:int)->bool:
+    return system(f'systemctl status wg-quick@wg{iface}') == 0
 
 def create_keypair(iface:int)->bool:
     try:
@@ -77,13 +81,19 @@ def create_keypair(iface:int)->bool:
 
 def create_config(iface:int)->bool:
     endpoint = db.query(Endpoint).filter_by(id=iface).first()
+    logger.debug(endpoint)
     if not endpoint:
         return False
     peers = db.query(Peer).filter_by(endpoint=endpoint.id).all()
+    logger.debug(peers)
+    if is_interface_running(iface):
+        control_interface(DaemonCommandType.CMD_STOP,iface)
     if is_interface_enabled(iface):
         control_interface(DaemonCommandType.CMD_DISABLE,iface)
     if not path.exists(f'/etc/wireguard/wg{iface}-privatekey'):
         create_keypair(iface)
+    if path.exists(f'/etc/wireguard/wg{iface}.conf'):
+        unlink(f'/etc/wireguard/wg{iface}.conf')
     try:
         with open(f'/etc/wireguard/wg{iface}-privatekey','r') as privkey_file:
             privatekey = privkey_file.readline()
