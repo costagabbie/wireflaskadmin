@@ -163,23 +163,13 @@ def edit_endpoint(id):
     endpoint = Endpoint.query.get_or_404(id)
     form = EndpointForm()
     # Fill the form with the already existing info
-    form.name.data = endpoint.name
-    form.address.data = endpoint.address
-    form.netmask.data = endpoint.netmask
-    form.listen_port.data = endpoint.listen_port
-    form.dns.data = endpoint.dns
-    form.routing_table.data = endpoint.routing_table
-    form.mtu.data = endpoint.mtu
-    form.preup.data = endpoint.preup
-    form.postup.data = endpoint.postup
-    form.predown.data = endpoint.predown
-    form.postdown.data = endpoint.postdown
     if form.validate_on_submit():
         # If the new info is validated we update the record
         endpoint.name = form.name.data
         endpoint.address = form.address.data
         endpoint.netmask = form.netmask.data
         endpoint.listen_port = form.listen_port.data
+        endpoint.ip_address = form.ip_address.data
         endpoint.dns = form.dns.data
         endpoint.routing_table = form.routing_table.data
         endpoint.mtu = form.mtu.data
@@ -189,9 +179,21 @@ def edit_endpoint(id):
         endpoint.postdown = form.postdown.data
         endpoint.last_modified_by = current_user.id
         endpoint.date_modified = datetime.utcnow()
-        db.session.submit()
+        db.session.commit()
         flash(strings["MANAGE_ENDPOINT_EDIT_SUCCESS"], "info")
         return redirect(url_for("main.list_endpoint"))
+    form.name.data = endpoint.name
+    form.address.data = endpoint.address
+    form.netmask.data = endpoint.netmask
+    form.listen_port.data = endpoint.listen_port
+    form.ip_address.data = endpoint.ip_address
+    form.dns.data = endpoint.dns
+    form.routing_table.data = endpoint.routing_table
+    form.mtu.data = endpoint.mtu
+    form.preup.data = endpoint.preup
+    form.postup.data = endpoint.postup
+    form.predown.data = endpoint.predown
+    form.postdown.data = endpoint.postdown
     return render_template(
         "endpoint_add.html", title=strings["MANAGE_ENDPOINT_EDIT"], form=form, endpoint=endpoint
     )
@@ -249,11 +251,6 @@ def edit_peer(id):
     peer = Peer.query.get_or_404(id)
     # Fill the form with the already existing info
     form = PeerForm()
-    form.name.data = peer.name
-    form.address.data = peer.address
-    form.netmask.data = peer.netmask
-    form.public_key.data = peer.public_key
-    form.keepalive.data = peer.keepalive
     if form.validate_on_submit():
         # If the new info is validated we update the record
         peer.name=form.name.data,
@@ -267,6 +264,11 @@ def edit_peer(id):
         db.session.commit()
         flash(strings["MANAGE_PEER_NEW_SUCCESS"], "info")
         return redirect(url_for("main.list_peer"))
+    form.name.data = peer.name
+    form.address.data = peer.address
+    form.netmask.data = peer.netmask
+    form.public_key.data = peer.public_key
+    form.keepalive.data = peer.keepalive
     return render_template(
         "peer_add.html", title=strings["MANAGE_PEER_EDIT"], form=form
     )
