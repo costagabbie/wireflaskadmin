@@ -62,6 +62,8 @@ def control_interface(action:DaemonCommandType,iface:int)->bool:
             logging.debug(f'control_interface executed :systemctl disable wg-quick@wg{iface}')
             return system(f'systemctl disable wg-quick@wg{iface}') == 0
 
+def is_interface_enabled(iface:str)->bool:
+    return system(f'systemctl is-enabled wg-quick@wg{iface}') == 0
 
 def create_keypair(iface:int)->bool:
     try:
@@ -78,6 +80,8 @@ def create_config(iface:int)->bool:
     if not endpoint:
         return False
     peers = db.query(Peer).filter_by(endpoint=endpoint.id).all()
+    if is_interface_enabled(iface):
+        control_interface(DaemonCommandType.CMD_DISABLE,iface)
     if not path.exists(f'/etc/wireguard/wg{iface}-privatekey'):
         create_keypair(iface)
     try:
