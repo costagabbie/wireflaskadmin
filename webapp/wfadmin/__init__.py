@@ -36,8 +36,9 @@ def create_app(config_class=Config):
     app.jinja_env.globals.update(service_running=service_running)
     from wfadmin.main.routes import main
     from wfadmin.errors.handlers import errors
-
+    from wfadmin.api.routes import api
     app.register_blueprint(main)
+    app.register_blueprint(api)
     app.register_blueprint(errors)
     print(f"Config('{Config.SECRET_KEY}', '{Config.RECAPTCHA_API_KEY}', '{Config.RECAPTCHA_SITE_KEY}', '{Config.SQLALCHEMY_DATABASE_URI}', '{Config.ENDPOINT_AUTOIP}')")
 
