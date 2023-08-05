@@ -1,44 +1,45 @@
-from wfadmin.models import Endpoint,Peer
+from wfadmin.models import Endpoint, Peer
 
 
-def writeEndpointInterface(endpoint:Endpoint)->str:
-    interfaceSection = \
-    f'''[Interface]
+def write_endpoint_interface(endpoint: Endpoint) -> str:
+    interface_section = f"""[Interface]
 #Name = {endpoint.name}
 Address={endpoint.address}
 ListenPort={endpoint.listen_port}
 PrivateKey=###REPLACE_ME_WITH_PRIVATE_KEY###
-'''
+"""
     if endpoint.routing_table == -1:
-        interfaceSection+=f'Table=off\n'
+        interface_section += f"Table=off\n"
     elif endpoint.routing_table > 0:
-        interfaceSection+=f'Table={endpoint.routing_table}\n'
+        interface_section += f"Table={endpoint.routing_table}\n"
     if 68 <= endpoint.mtu < 1500:
-        interfaceSection+=f'MTU={endpoint.mtu}\n'
+        interface_section += f"MTU={endpoint.mtu}\n"
     if len(endpoint.preup) > 0:
-        interfaceSection+=f'PreUp={endpoint.preup}\n'
+        interface_section += f"PreUp={endpoint.preup}\n"
     if len(endpoint.postup) > 0:
-        interfaceSection+=f'PostUp={endpoint.postup}\n'
+        interface_section += f"PostUp={endpoint.postup}\n"
     if len(endpoint.predown) > 0:
-        interfaceSection+=f'PreDown={endpoint.predown}\n'
-    if len(endpoint.postdown) >0:
-        interfaceSection+=f'PostDown={endpoint.postdown}\n'
+        interface_section += f"PreDown={endpoint.predown}\n"
+    if len(endpoint.postdown) > 0:
+        interface_section += f"PostDown={endpoint.postdown}\n"
+
+    return interface_section
 
 
-    return interfaceSection
-def writeEndpointPeer(peer:Peer)->str:
-    peerSection = f'''
+def write_endpoint_peer(peer: Peer) -> str:
+    peer_section = f"""
 [Peer]
 #Name={peer.name}
 AllowedIPs={peer.address}/{peer.netmask}
 PublicKey={peer.public_key}
-'''
+"""
     if peer.keepalive > 0:
-        peerSection+=f'PersistentKeepalive={peer.keepalive}'
-    return peerSection
+        peer_section += f"PersistentKeepalive={peer.keepalive}"
+    return peer_section
 
-def writePeer(peer:Peer)->str:
-    peerConfig=f'''[Interface]
+
+def write_peer(peer: Peer) -> str:
+    peer_config = f"""[Interface]
 PrivateKey = ###REPLACE_ME_WITH_PEER_PRIVATE_KEY###
 Address = 10.0.0.0/32
 
@@ -46,7 +47,7 @@ Address = 10.0.0.0/32
 PublicKey = {peer.endpoint_pubkey()}
 AllowedIPs = {peer.address}/{peer.netmask}
 Endpoint = {peer.endpoint_address()}
-'''
-    if peer.keepalive >0:
-        peerConfig+=f'PersistentKeepalive = {peer.keepalive}'
-    return peerConfig
+"""
+    if peer.keepalive > 0:
+        peer_config += f"PersistentKeepalive = {peer.keepalive}"
+    return peer_config
