@@ -76,3 +76,13 @@ class Peer(db.Model):
     def endpoint_name(self):
         endpoint = Endpoint.query.get(self.endpoint)
         return endpoint.name
+    
+    @hybrid_method
+    def endpoint_pubkey(self):
+        endpoint = Endpoint.query.get(self.endpoint)
+        return endpoint.public_key
+
+    @hybrid_method
+    def endpoint_address(self):
+        endpoint = Endpoint.query.get(self.endpoint)
+        return f'{endpoint.ip_address}:{endpoint.listen_port}'
