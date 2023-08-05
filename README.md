@@ -15,8 +15,9 @@ Have entries for each endpoint(wireguard interface) that you host, private keys 
 Each peer is linked to an endpoint, and you can manage each one of them, and once you tell the daemon to rebuild the configuration it will rebuild and restart the interface(s).
 ### Authentication
 The authentication to change the configurations are provided by PAM, if someone wants to add support to LDAP please feel free to contribute.
+### API
+Web api that allows login and retrieval of Endpoint and Peer configurations already using wireguard format 
 ## Planned Features
-- Web API that returns a wireguard "Endpoint" or "Peer" configuration.
 - API Agent that poll the Web API and automatically deploy the provisioned configuration.
 - reCaptcha(or some other captcha system) on login to make bruteforcing a bit more difficult.
 - 2FA for that extra bit of security.
