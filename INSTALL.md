@@ -54,7 +54,7 @@ WFADMIN_DAEMON_HOST=127.0.0.1
 WFADMIN_DAEMON_PORT=9929
 WFADMIN_REBUILD_STARTUP=N
 ```
-*Tip: You can like this file to ~/wireflaskadmin/daemon/.env this way you will have your configs in the same file.*
+*Tip: You can symlink this file to ~/wireflaskadmin/daemon/.env this way you will have your configs in the same file.*
 ### For daemon
 Same as above.
 ## Creating the virtual environments
