@@ -11,6 +11,12 @@ In the case the web application still can be used, however the rebuild/start/sto
 - Python 3 pip
 #### Installing the common dependencies on Debian
 `# apt update && apt install mariadb-server nginx python3-venv python3-pip`
+#### Installing the common dependencies on Gentoo
+`# emerge -av dev-lang/python dev-python/pip dev-db/mariadb www-servers/nginx`
+#### Installing the common dependencies on Fedora(should be the same on RHEL)
+`# dnf install mariadb-server, nginx`
+#### Installing the common depencies on Arch Linux
+`# pacman -S mariadb-git nginx`
 You should look your distro repository for those on debian they are, and probably you already have the python stuff installed.
 ### Dependencies for the webapp
 They are listed as pip packages, and the project is developed with these versions in mind, however if you have these packages on your
