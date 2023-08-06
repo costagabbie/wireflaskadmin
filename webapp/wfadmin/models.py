@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     date_creation = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-
+    api_key = db.Column(db.String(37),unique=True)
     def __repr__(self):
         return f"User('{self.username}', '{self.password}', '{self.date_creation}')"
 

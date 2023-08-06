@@ -9,6 +9,7 @@ from wfadmin.config import Config
 from wfadmin.models import User, UserLogin, Endpoint, Peer
 from wfadmin.main.forms import LoginForm, EndpointForm, PeerForm
 from wfadmin.main.utils import SendCommand
+from uuid import uuid4
 from wfadmin.translations.default import strings
 from common.types import CommandPacket, DaemonCommandType
 
@@ -78,6 +79,7 @@ def login():
                         password=bcrypt.generate_password_hash(
                             form.password.data
                         ).decode("utf-8"),
+                        api_key=uuid4()
                     )
                     db.session.add(user)
                     db.session.commit()
