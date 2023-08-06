@@ -121,7 +121,7 @@ Note that servername can be added, but it is left out intentionally, also **YOU 
 Now lets enable the site 
 ```
 root@localhost /etc/nginx/sites-available # cd ../sites-enabled
-root@localhost /etc/nginx/sites-enabled # ln -s ../sites-enabled/wfadmin wfadmin
+root@localhost /etc/nginx/sites-enabled # ln -s ../sites-available/wfadmin wfadmin
 root@localhost /etc/nginx/sites-enabled # nginx -t
 ```
 if the nginx test pass then restart nginx
