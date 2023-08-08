@@ -13,7 +13,7 @@ pwd= password for the user
 Success: HTTP 200 with a string '200'
 Failure: HTTP 403.
 ```
-## /api/endpoint/<pubkey>
+## /api/endpoint/\<pubkey\>
 ### Description
 Providing the "Wireguard Endpoint" public key it will return a configuration file.
 Note:Since there's nowhere within the app to get the Private key it generates with a placeholder.
@@ -21,14 +21,14 @@ Note:Since there's nowhere within the app to get the Private key it generates wi
 Success: HTTP 200 with the body being the configuration file.
 Failure: HTTP 404
 **Note: that the public key need to be passed in the url encoded as Base64URL because the key may have some characters that will interfere with the url(/+=).**
-## /api/endpoint/<id>
+## /api/endpoint/\<id\>
 ### Description
 Providing the primary key of the database entry for the "Wireguard Endpoint" it will return a configuration file.
 Note that since there's nowhere within the app to get the Private key it generates with a placeholder.
 ### Result
 Success: HTTP 200 with the body being the configuration file.
 Failure: HTTP 404
-## /api/peer/<pubkey>
+## /api/peer/\<pubkey\>
 ### Optional parameter
 routeall: 0 will have only the endpoint ip in the AllowedIPs, 1 will have the endpoint ip, plus all other peers that share the same endpoint
 ### Description
@@ -38,7 +38,7 @@ Note: Since there's nowhere within the app to get the Private key it generates w
 Success: HTTP 200 with the body being the configuration file.
 Failure: HTTP 404
 **Note: The public key need to be passed in the url encoded as Base64URL because the key may have some characters that will interfere with the url(/+=).**
-## /api/peer/<id>
+## /api/peer/\<id\>
 ### Optional parameter
 routeall: 0 will have only the endpoint ip in the AllowedIPs, 1 will have the endpoint ip, plus all other peers that share the same endpoint
 ### Description
