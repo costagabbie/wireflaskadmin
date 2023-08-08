@@ -30,6 +30,12 @@ class EndpointForm(FlaskForm):
             Length(min=3, max=20),
         ],
     )
+    public_key = StringField(
+        strings["MANAGE_PEER_NEW_PUBKEY"],
+        validators=[
+            DataRequired(message=strings["VALIDATION_DATAREQUIRED"])
+        ],
+    )
     address = StringField(
         strings["MANAGE_ENDPOINT_ADDRESS"],
         validators=[

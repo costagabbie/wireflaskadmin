@@ -83,6 +83,11 @@ class Peer(db.Model):
         return endpoint.public_key
 
     @hybrid_method
-    def endpoint_address(self):
+    def endpoint_ipaddress(self):
         endpoint = Endpoint.query.get(self.endpoint)
         return f'{endpoint.ip_address}:{endpoint.listen_port}'
+    
+    @hybrid_method
+    def endpoint_address(self):
+        endpoint = Endpoint.query.get(self.endpoint)
+        return f'{endpoint.address}/{endpoint.netmask}'

@@ -38,15 +38,26 @@ PublicKey={peer.public_key}
     return peer_section
 
 
-def write_peer(peer: Peer) -> str:
+def write_peer(peer: Peer,route_all:bool) -> str:
+    allowed_ip = ''
+    #If we want the config to allow the peer to reach another peer
+    if route_all:
+        allowed_ip = peer.endpoint_address()+','
+        all_peers = Peer.query.filter_by(endpoint=peer.endpoint).all()
+        for routable_peer in all_peers:
+            if routable_peer.id != peer.id:
+                allowed_ip += f'{routable_peer.address}/{routable_peer.netmask},'
+        allowed_ip = allowed_ip[:-1] #remove the last ','
+    else:
+        allowed_ip = peer.endpoint_address()
     peer_config = f"""[Interface]
 PrivateKey = ###REPLACE_ME_WITH_PEER_PRIVATE_KEY###
-Address = 10.0.0.0/32
+Address = {peer.address}/{peer.netmask}
 
 [Peer]
 PublicKey = {peer.endpoint_pubkey()}
-AllowedIPs = {peer.address}/{peer.netmask}
-Endpoint = {peer.endpoint_address()}
+AllowedIPs = {allowed_ip}
+Endpoint = {peer.endpoint_ipaddress()}
 """
     if peer.keepalive > 0:
         peer_config += f"PersistentKeepalive = {peer.keepalive}"

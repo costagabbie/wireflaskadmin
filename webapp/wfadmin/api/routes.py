@@ -14,7 +14,7 @@ api = Blueprint("api", __name__)
 def login(api_key):
     if current_user.is_authenticated:
         return abort(403)
-    user = User.query.filter_by(api_key=api_key)
+    user = User.query.filter_by(api_key=api_key).first()
     if not user :
         return abort(403)
     new_login = UserLogin(
@@ -67,9 +67,10 @@ def endpoint_by_id(id):
 def peer_by_pubkey(pubkey):
     if not current_user.is_authenticated:
         abort(403)
+    route_all = request.args.get("routeall",0,int) == 1
     peer = Peer.query.filter_by(public_key=urlsafe_b64decode(pubkey).decode()).first()
     if peer:
-        configuration = write_peer(peer)
+        configuration = write_peer(peer,route_all)
         return make_response(configuration, 200)
     return abort(404)
 
@@ -79,5 +80,6 @@ def peer_by_id(id):
     if not current_user.is_authenticated:
         abort(403)
     peer = Peer.query.get_or_404(id)
-    configuration = write_peer(peer)
+    route_all = request.args.get("routeall",0,int) == 1
+    configuration = write_peer(peer,route_all)
     return make_response(configuration, 200)

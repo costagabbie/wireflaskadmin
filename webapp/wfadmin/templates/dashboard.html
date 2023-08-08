@@ -24,6 +24,12 @@
       <p>{{ ifaces|safe }}</p>
     </div>
     <div class="row">
+      <div class="col-md">
+        <h6>API Key</h6>
+        <p>{{ current_user.api_key }}</p>
+      </div>  
+    </div>
+    <div class="row">
       <div class="col-sm">
         <h6>{{ language_strings['DASHBOARD_ACTIONS_TITLE'] }}</h6>
         <a class="btn btn-success" href="{{ url_for('main.start_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_START'] }}</a>
