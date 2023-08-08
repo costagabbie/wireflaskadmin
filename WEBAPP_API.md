@@ -29,6 +29,8 @@ Note that since there's nowhere within the app to get the Private key it generat
 Success: HTTP 200 with the body being the configuration file.
 Failure: HTTP 404
 ## /api/peer/<pubkey>
+### Optional parameter
+routeall: 0 will have only the endpoint ip in the AllowedIPs, 1 will have the endpoint ip, plus all other peers that share the same endpoint
 ### Description
 Providing the public key inserted for the "Wireguard Peer", it will return a configuration file for the peer, perhaps a future implementation could add an option to generate a Network Manager file or a zip file to be imported?
 Note: Since there's nowhere within the app to get the Private key it generates with a placeholder.
@@ -37,6 +39,8 @@ Success: HTTP 200 with the body being the configuration file.
 Failure: HTTP 404
 **Note: The public key need to be passed in the url encoded as Base64URL because the key may have some characters that will interfere with the url(/+=).**
 ## /api/peer/<id>
+### Optional parameter
+routeall: 0 will have only the endpoint ip in the AllowedIPs, 1 will have the endpoint ip, plus all other peers that share the same endpoint
 ### Description
 Providing the primary key of the database entry for the "Wireguard Peert" it will return a configuration file.
 Note that since there's nowhere within the app to get the Private key it generates with a placeholder.
