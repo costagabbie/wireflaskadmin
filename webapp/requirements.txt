@@ -2,11 +2,13 @@ bcrypt==4.0.1
 blinker==1.6.2
 certifi==2023.7.22
 cffi==1.15.1
+charset-normalizer==3.2.0
 click==8.1.6
 dnspython==2.4.1
 email-validator==2.0.0.post2
 Flask==2.3.2
 Flask-Bcrypt==1.0.1
+flask-ipban==1.1.5
 Flask-Login==0.6.2
 Flask-Mail==0.9.1
 Flask-SQLAlchemy==3.0.5
@@ -20,8 +22,11 @@ pamela==1.1.0
 pycparser==2.21
 PyMySQL==1.1.0
 python-dotenv==1.0.0
+PyYAML==6.0.1
+requests==2.31.0
 six==1.16.0
 SQLAlchemy==2.0.19
 typing_extensions==4.7.1
+urllib3==2.0.4
 Werkzeug==2.3.6
 WTForms==3.0.1

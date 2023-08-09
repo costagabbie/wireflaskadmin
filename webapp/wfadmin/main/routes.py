@@ -4,7 +4,7 @@ from subprocess import check_output
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from wfadmin import db, bcrypt
+from wfadmin import db, bcrypt, ip_ban
 from wfadmin.config import Config
 from wfadmin.models import User, UserLogin, Endpoint, Peer
 from wfadmin.main.forms import LoginForm, EndpointForm, PeerForm
@@ -54,6 +54,7 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for("main.dashboard"))
     request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
+    ip_ban.add(ip=request.remote_addr,url=url_for('main.login'))
     form = LoginForm()
     if form.validate_on_submit():
         # If the form is being posted and passed the validations
