@@ -22,7 +22,10 @@
       <th scope="row">{{ peer.name }}</th>
       <th>{{ peer.address }}<small class="text-muted">{{ peer.ip_address }}</th>
       <th>{{ peer.endpoint_name() }}</small></th>
-      <th><a class="btn btn-warning" href="{{ url_for('main.edit_peer',id=peer.id) }}">{{ language_strings['MANAGE_PEER_EDIT'] }}</a></th>
+      <th>
+        <a class="btn btn-warning" href="{{ url_for('main.edit_peer',id=peer.id) }}">{{ language_strings['MANAGE_PEER_EDIT'] }}</a>
+        <button class="btn btn-danger" onclick="confirm_action('{{ language_strings['MANAGE_ENDPOINT_DELETE_QUESTION'] }}','{{ url_for('main.delete_peer',id=peer.id, _external=True) }}')">{{ language_strings['MANAGE_PEER_DELETE']}}</button>
+      </th>
     </tr>
     {% endfor %}
     {% else %}
@@ -49,4 +52,11 @@
   </div>
 
 </div>
+<script>
+  function confirm_action(message,action){
+    if (confirm(message) == true) { 
+      window.location = action
+    }
+  }
+</script>
 {% endblock content %}

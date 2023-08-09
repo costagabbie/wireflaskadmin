@@ -23,11 +23,27 @@
       <th>{{ endpoint.address }}<small class="text-muted">{{ endpoint.ip_address }}</small></th>
       <th>{{ endpoint.listen_port }}</th>
       <th>
-        <a class="btn btn-secondary" href="{{ url_for('main.edit_endpoint',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_EDIT'] }}</a>
-        <a class="btn btn-success" href="{{ url_for('main.start_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_START'] }}</a>
-        <a class="btn btn-danger" href="{{ url_for('main.stop_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_STOP'] }}</a>
-        <a class="btn btn-info" href="{{ url_for('main.restart_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_RESTART'] }}</a>
-        <a class="btn btn-warning" href="{{ url_for('main.rebuild_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_REBUILD'] }}</a>
+        <div class="row">
+          <div class="col-sm-2">
+            <a class="btn btn-primary" href="{{ url_for('main.edit_endpoint',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_EDIT'] }}</a>
+          </div>
+          <div class="col-sm-6">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Control
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ url_for('main.start_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_START'] }}</a>
+                <a class="dropdown-item" href="{{ url_for('main.stop_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_STOP'] }}</a>
+                <a class="dropdown-item" href="{{ url_for('main.restart_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_RESTART'] }}</a>
+                <a class="dropdown-item" href="{{ url_for('main.rebuild_interface',id=endpoint.id) }}">{{ language_strings['MANAGE_ENDPOINT_REBUILD'] }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-danger" onclick="confirm_action('{{ language_strings['MANAGE_ENDPOINT_DELETE_QUESTION'] }}','{{ url_for('main.delete_endpoint',id=endpoint.id, _external=True) }}')">{{ language_strings['MANAGE_ENDPOINT_DELETE'] }}</button>
+          </div>
+        </div>
       </th>
     </tr>
     {% endfor %}
@@ -55,4 +71,11 @@
   </div>
   
 </div>
+<script>
+  function confirm_action(message,action){
+    if (confirm(message) == true) { 
+      window.location = action
+    }
+  }
+</script>
 {% endblock content %}
