@@ -12,8 +12,11 @@ from wfadmin.main.utils import SendCommand
 from uuid import uuid4
 from wfadmin.translations.default import strings
 from common.types import CommandPacket, DaemonCommandType
+import json
 
 main = Blueprint("main", __name__)
+
+
 
 @main.after_request
 def add_header(response):
@@ -26,7 +29,7 @@ def add_header(response):
 @main.route("/dashboard")
 @login_required
 def dashboard():
-    ifaces = check_output(['ip', '-s' ,'link']).decode('utf-8')
+    ifaces = json.loads(check_output(['ip', '-js' ,'link']).decode('utf-8'))
     # Get the info from the system
     s = check_output("uptime").decode("utf-8")
     # Do the string manipulation magic
@@ -42,8 +45,7 @@ def dashboard():
         load_avg=load_avg,
         peer_count=peer_count,
         endpoint_count=endpoint_count,
-        ifaces=ifaces.replace('\n','<br/>')
-    )
+        ifaces=ifaces)
 
 
 @main.route("/login", methods=["GET", "POST"])

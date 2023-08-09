@@ -20,16 +20,46 @@
       </div>
     </div>
     <div class="row">
-      <h6>Network Interfaces</h6>
-      <p>{{ ifaces|safe }}</p>
-    </div>
-    <div class="row">
       <div class="col-md">
         <h6>API Key</h6>
         <p>{{ current_user.api_key }}</p>
       </div>  
     </div>
-    <div class="row">
+    <div class="row border border-secondary rounded">
+      <h6>Network Interfaces</h6>
+      <table class="table table-sm table-striped">
+        <thead class="thead-dark">
+          <th scope="col">Id</th>
+          <th scope="col">Interface</th>
+          <th scope="col">Linktype</th>
+          <th scope="col">MAC</th>
+          <th scope="col">MTU</th>
+          <th scope="col">Status</th>
+        </thead>
+        <tbody>
+          {% if ifaces %}
+          {% for iface in ifaces %}
+            <tr>
+            <th scope="row">{{ iface.ifindex}}</th>
+            <th>{{ iface.ifname }}</th>
+            <th>{{ iface.link_type }}</th>
+            <th>{{ iface.address }}</th>
+            <th>{{ iface.mtu }}</th>
+            {% if 'UP' in iface.flags %}
+            <th>Enabled</th>
+            {% else %}
+            <th>Disabled</th>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          {% else %}
+          <th scope="row">{{ language_strings['MANAGE_ENDPOINT_LISTENPORT'] }}</th>  
+          {% endif %}
+        </tbody> 
+      </table>
+    </div>
+    
+    <div class="row border border-secondary rounded">
       <div class="col-sm">
         <h6>{{ language_strings['DASHBOARD_ACTIONS_TITLE'] }}</h6>
         <a class="btn btn-success" href="{{ url_for('main.start_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_START'] }}</a>
