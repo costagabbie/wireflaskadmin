@@ -22,12 +22,12 @@ def service_running(service: str) -> bool:
     status = system(f"systemctl is-active --quiet {service}")
     return status == 0
 
-
 def create_app(config_class=Config):
     # Initializing stuff
     app = Flask(__name__)
     app.config.from_object(Config)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)

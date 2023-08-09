@@ -15,6 +15,12 @@ from common.types import CommandPacket, DaemonCommandType
 
 main = Blueprint("main", __name__)
 
+@main.after_request
+def add_header(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    return response
+
 
 @main.route("/")
 @main.route("/dashboard")
