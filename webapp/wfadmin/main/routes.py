@@ -214,6 +214,7 @@ def edit_endpoint(id):
 def delete_endpoint(id):
     endpoint = Endpoint.query.get_or_404(id)
     db.session.delete(endpoint)
+    db.session.commit()
     flash(strings['MANAGE_ENDPOINT_DELETED'],'info')
     return redirect(url_for('main.list_endpoint'))
 

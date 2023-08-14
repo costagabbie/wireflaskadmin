@@ -50,6 +50,7 @@ class Endpoint(db.Model):
     date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow())
     last_modified_by = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     date_modified = db.Column(db.DateTime,nullable=False,default=datetime.utcnow())
+    peers = db.relationship('Peer',cascade='delete, merge, save-update')
     def __repr__(self):
         return f"Endpoint({self.id}, '{self.name}', '{self.address}', {self.netmask}, \
             {self.listen_port}, '{self.ip_address}', '{self.dns}', {self.routing_table}, \
