@@ -146,6 +146,7 @@ def add_endpoint():
             name=form.name.data,
             address=form.address.data,
             netmask=form.netmask.data,
+            public_key=form.public_key.data,
             listen_port=form.listen_port.data,
             ip_address=form.ip_address.data,
             dns=form.dns.data,
@@ -178,6 +179,7 @@ def edit_endpoint(id):
         endpoint.name = form.name.data
         endpoint.address = form.address.data
         endpoint.netmask = form.netmask.data
+        endpoint.public_key = form.public_key.data
         endpoint.listen_port = form.listen_port.data
         endpoint.ip_address = form.ip_address.data
         endpoint.dns = form.dns.data
@@ -195,6 +197,7 @@ def edit_endpoint(id):
     form.name.data = endpoint.name
     form.address.data = endpoint.address
     form.netmask.data = endpoint.netmask
+    form.public_key.data = endpoint.public_key
     form.listen_port.data = endpoint.listen_port
     form.ip_address.data = endpoint.ip_address
     form.dns.data = endpoint.dns
