@@ -9,7 +9,10 @@ The webapp should run as a normal user, since it's not a good idea to run an int
 It's in early development stage, the webapp is pretty much done, just need some better exception handling and some UI/UX refinements, and also some extensive testing.
 Feel free to contribute to the project, either with python code, unit tests, or html/css/js or even translating or improving this readme file, or even documentation.
 ## Security
+### Automated tools scanning
 The project has been scanned with Nikto and wapiti, no major issues has been found.
+### No private key on the webapp
+The webapp doesn't handle any private keys for an specific reason, if it is ever compromised, not having private keys will mitigate the damage that an attacker with a private key would have.
 ## Features
 ### Endpoint Management
 Have entries for each endpoint(wireguard interface) that you host, private keys and pubkeys are created by the daemon with its own interface config, and only the pubkey is available for the webapp for security reasons.
