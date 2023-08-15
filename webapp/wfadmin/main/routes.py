@@ -112,6 +112,19 @@ def login():
                 flash(strings["LOGIN_FAILURE"], "error")
     return render_template("login.html", title=strings["LOGIN_TITLE"], form=form)
 
+@login_required
+@main.route('/switchtheme')
+def switch_theme():
+    
+    user = User.query.get_or_404(current_user.id)
+    user.dark_theme = not user.dark_theme
+    db.session.commit()
+    next_page = request.args.get("next")
+    return (
+        redirect(next_page)
+            if next_page
+            else redirect(url_for("main.dashboard"))
+        )
 
 @login_required
 @main.route("/logout")
@@ -147,6 +160,7 @@ def add_endpoint():
             name=form.name.data,
             address=form.address.data,
             netmask=form.netmask.data,
+            public_key=form.public_key.data,
             listen_port=form.listen_port.data,
             ip_address=form.ip_address.data,
             dns=form.dns.data,
@@ -179,6 +193,7 @@ def edit_endpoint(id):
         endpoint.name = form.name.data
         endpoint.address = form.address.data
         endpoint.netmask = form.netmask.data
+        endpoint.public_key = form.public_key.data
         endpoint.listen_port = form.listen_port.data
         endpoint.ip_address = form.ip_address.data
         endpoint.dns = form.dns.data
@@ -196,6 +211,7 @@ def edit_endpoint(id):
     form.name.data = endpoint.name
     form.address.data = endpoint.address
     form.netmask.data = endpoint.netmask
+    form.public_key.data = endpoint.public_key
     form.listen_port.data = endpoint.listen_port
     form.ip_address.data = endpoint.ip_address
     form.dns.data = endpoint.dns
@@ -215,6 +231,7 @@ def edit_endpoint(id):
 def delete_endpoint(id):
     endpoint = Endpoint.query.get_or_404(id)
     db.session.delete(endpoint)
+    db.session.commit()
     flash(strings['MANAGE_ENDPOINT_DELETED'],'info')
     return redirect(url_for('main.list_endpoint'))
 

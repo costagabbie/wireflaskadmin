@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     date_creation = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     api_key = db.Column(db.String(37),unique=True)
+    dark_theme = db.Column(db.Boolean, nullable=False, default=False)
     def __repr__(self):
         return f"User('{self.username}', '{self.password}', '{self.date_creation}')"
 
@@ -50,6 +51,7 @@ class Endpoint(db.Model):
     date_added = db.Column(db.DateTime,nullable=False,default=datetime.utcnow())
     last_modified_by = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     date_modified = db.Column(db.DateTime,nullable=False,default=datetime.utcnow())
+    peers = db.relationship('Peer',cascade='delete, merge, save-update')
     def __repr__(self):
         return f"Endpoint({self.id}, '{self.name}', '{self.address}', {self.netmask}, \
             {self.listen_port}, '{self.ip_address}', '{self.dns}', {self.routing_table}, \
