@@ -111,6 +111,19 @@ def login():
                 flash(strings["LOGIN_FAILURE"], "error")
     return render_template("login.html", title=strings["LOGIN_TITLE"], form=form)
 
+@login_required
+@main.route('/switchtheme')
+def switch_theme():
+    
+    user = User.query.get_or_404(current_user.id)
+    user.dark_theme = not user.dark_theme
+    db.session.commit()
+    next_page = request.args.get("next")
+    return (
+        redirect(next_page)
+            if next_page
+            else redirect(url_for("main.dashboard"))
+        )
 
 @login_required
 @main.route("/logout")

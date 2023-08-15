@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     date_creation = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     api_key = db.Column(db.String(37),unique=True)
+    dark_theme = db.Column(db.Boolean, nullable=False, default=False)
     def __repr__(self):
         return f"User('{self.username}', '{self.password}', '{self.date_creation}')"
 

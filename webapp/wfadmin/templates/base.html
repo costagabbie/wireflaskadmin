@@ -7,8 +7,15 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    {% if current_user.is_authenticated %}
+      {% if current_user.dark_theme %}  
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main_dark.css') }}">
+      {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+      {% endif %}
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    {% endif %}  
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% if title %}
         <title>WireFlaskAdmin- {{ title }}</title>
@@ -36,6 +43,7 @@
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
                 <a class="nav-item nav-link" href="{{ url_for('main.logout') }}">{{ language_strings['MENU_LOGOUT']}}</a>
+                <a class="nav-item nav-link" href="{{ url_for('main.switch_theme',next=url_for(request.endpoint)) }}">🌓</a>
               {% endif %}
             </div>
           </div>
@@ -54,7 +62,10 @@
               {% endfor %}
             {% endif %}
           {% endwith %}
+
+          <div class="content-section"> 
           {% block content %}{% endblock %}
+          </div>
         </div>
       </div>
     </main>
