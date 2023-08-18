@@ -290,7 +290,7 @@ def edit_peer(id):
         peer.last_modified_by = current_user.id
         peer.date_modified = datetime.utcnow()
         db.session.commit()
-        flash(strings["MANAGE_PEER_NEW_SUCCESS"], "info")
+        flash(strings["MANAGE_PEER_EDIT_SUCCESS"], "info")
         return redirect(url_for("main.list_peer"))
     form.name.data = peer.name
     form.address.data = peer.address
