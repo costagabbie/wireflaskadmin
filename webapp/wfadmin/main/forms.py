@@ -33,7 +33,8 @@ class EndpointForm(FlaskForm):
     public_key = StringField(
         strings["MANAGE_PEER_NEW_PUBKEY"],
         validators=[
-            DataRequired(message=strings["VALIDATION_DATAREQUIRED"])
+            DataRequired(message=strings["VALIDATION_DATAREQUIRED"]),
+            Length(min=45,max=45)
         ],
     )
     address = StringField(
@@ -109,7 +110,7 @@ class PeerForm(FlaskForm):
         strings["MANAGE_PEER_NEW_PUBKEY"],
         validators=[
             DataRequired(strings["VALIDATION_DATAREQUIRED"]),
-            Length(min=3, max=45),
+            Length(min=45, max=45),
         ],
     )
     keepalive = IntegerField(strings["MANAGE_PEER_NEW_KEEPALIVE"])
