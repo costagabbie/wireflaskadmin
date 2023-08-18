@@ -2,6 +2,7 @@ from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_ipban import IpBan
 from wfadmin.config import Config
 from wfadmin.translations.default import strings
 from os import path, system
@@ -11,6 +12,7 @@ sys.path.append('../')
 # The stuff that the app needs
 db = SQLAlchemy()
 bcrypt = Bcrypt()
+ip_ban = IpBan(ban_seconds=200)
 login_manager = LoginManager()
 login_manager.login_view = "main.login"
 login_manager.login_message_category = "info"
@@ -31,6 +33,8 @@ def create_app(config_class=Config):
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    
+    ip_ban.init_app(app)
     # Making the language strings available globally to the templates
     app.jinja_env.globals.update(language_strings=strings)
     app.jinja_env.globals.update(service_running=service_running)
