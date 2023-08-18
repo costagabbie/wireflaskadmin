@@ -26,6 +26,7 @@
       </div>  
     </div>
     <div class="row border border-secondary rounded">
+      <div class="col-sm">
       <h6>Network Interfaces</h6>
       <table class="table table-sm table-striped">
         <thead class="thead-dark">
@@ -58,7 +59,7 @@
         </tbody> 
       </table>
     </div>
-    
+    </div>
     <div class="row border border-secondary rounded">
       <div class="col-sm">
         <h6>{{ language_strings['DASHBOARD_ACTIONS_TITLE'] }}</h6>
@@ -66,7 +67,9 @@
         <a class="btn btn-danger" href="{{ url_for('main.stop_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_STOP'] }}</a>
         <a class="btn btn-info" href="{{ url_for('main.restart_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_RESTART'] }}</a>
         <a class="btn btn-warning" href="{{ url_for('main.rebuild_interface',id=0) }}">{{ language_strings['DASHBOARD_ACTIONS_REBUILD'] }}</a>
+        <p></p>
       </div>
     </div>
   </div>
+</div>
 {% endblock content%}
