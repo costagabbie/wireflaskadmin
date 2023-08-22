@@ -81,3 +81,9 @@ body {
   .account-heading {
     font-size: 2.5rem;
   }
+  .modal-content {
+    background-color: #2c2c2c;
+  }
+  .close {
+    color: #fff;
+  }

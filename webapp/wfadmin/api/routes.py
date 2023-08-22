@@ -14,7 +14,7 @@ api = Blueprint("api", __name__)
 def login(api_key):
     #Getting IP and rate limiting
     request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
-    ip_ban.add(ip=request.remote_addr,url=url_for('api.login'))
+    ip_ban.add(ip=request.remote_addr,url=url_for('api.login',api_key=api_key))
     if current_user.is_authenticated:
         return abort(403)
     user = User.query.filter_by(api_key=api_key).first()
@@ -35,7 +35,7 @@ def login(api_key):
 def endpoint_by_pubkey(pubkey):
     #Getting IP and rate limiting
     request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
-    ip_ban.add(ip=request.remote_addr,url=url_for('api.endpoint_by_pubkey'))
+    ip_ban.add(ip=request.remote_addr,url=url_for('api.endpoint_by_pubkey',pubkey=pubkey))
     # Check if the user is authenticated
     if not current_user.is_authenticated:
         abort(403)
@@ -59,7 +59,7 @@ def endpoint_by_pubkey(pubkey):
 def endpoint_by_id(id):
     #Getting IP and rate limiting
     request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
-    ip_ban.add(ip=request.remote_addr,url=url_for('api.endpoint_by_id'))
+    ip_ban.add(ip=request.remote_addr,url=url_for('api.endpoint_by_id',id=id))
     if not current_user.is_authenticated:
         abort(403)
     endpoint = Endpoint.query.get_or_404(id)
@@ -76,7 +76,7 @@ def endpoint_by_id(id):
 def peer_by_pubkey(pubkey):
     #Getting IP and rate limiting
     request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
-    ip_ban.add(ip=request.remote_addr,url=url_for('api.peer_by_pubkey'))
+    ip_ban.add(ip=request.remote_addr,url=url_for('api.peer_by_pubkey',pubkey=pubkey))
     if not current_user.is_authenticated:
         abort(403)
     route_all = request.args.get("routeall",0,int) == 1
@@ -91,7 +91,7 @@ def peer_by_pubkey(pubkey):
 def peer_by_id(id):
     #Getting IP and rate limiting
     request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
-    ip_ban.add(ip=request.remote_addr,url=url_for('api.peer_by_id'))
+    ip_ban.add(ip=request.remote_addr,url=url_for('api.peer_by_id',id=id))
     if not current_user.is_authenticated:
         abort(403)
     peer = Peer.query.get_or_404(id)
