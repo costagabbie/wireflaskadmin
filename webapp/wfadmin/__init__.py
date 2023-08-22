@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_ipban import IpBan
+from flask_hcaptcha import hCaptcha
 from wfadmin.config import Config
 from wfadmin.translations.default import strings
 from os import path, system
@@ -18,6 +19,8 @@ login_manager.login_view = "main.login"
 login_manager.login_message_category = "info"
 login_manager.login_message = strings["LOGIN_MESSAGE"]
 configuration = Config()
+hcaptcha = hCaptcha()
+
 
 
 def service_running(service: str) -> bool:
@@ -33,10 +36,13 @@ def create_app(config_class=Config):
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    hcaptcha.init_app(app)
+
     
     ip_ban.init_app(app)
     # Making the language strings available globally to the templates
     app.jinja_env.globals.update(language_strings=strings)
+    app.jinja_env.globals.update(HCAPTCHA_ENABLED=Config.HCAPTCHA_ENABLE)
     app.jinja_env.globals.update(service_running=service_running)
     from wfadmin.main.routes import main
     from wfadmin.errors.handlers import errors
@@ -44,6 +50,5 @@ def create_app(config_class=Config):
     app.register_blueprint(main)
     app.register_blueprint(api)
     app.register_blueprint(errors)
-    print(f"Config('{Config.SECRET_KEY}', '{Config.RECAPTCHA_API_KEY}', '{Config.RECAPTCHA_SITE_KEY}', '{Config.SQLALCHEMY_DATABASE_URI}', '{Config.ENDPOINT_AUTOIP}')")
 
     return app
