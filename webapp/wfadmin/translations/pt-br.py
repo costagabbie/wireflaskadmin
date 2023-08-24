@@ -30,6 +30,8 @@ strings = {
     "DASHBOARD_ACTIONS_RESTART":"Reiniciar todas interfaces",
     "DASHBOARD_ACTIONS_STOP":"Parar todas interfaces",
     "DASHBOARD_ACTIONS_REBUILD":"Reconstruir todas configs",
+    "DASHBOARD_ENABLED":"Habilitado",
+    "DASHBOARD_DISABLED":"Desabilitado",
     "MANAGE_PEER_ADD":"Adicionar novo peer",
     "MANAGE_PEER_EDIT":"Editar peer",
     "MANAGE_PEER_DELETE":"Deletar peer",

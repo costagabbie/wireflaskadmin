@@ -47,9 +47,9 @@
             <th>{{ iface.address }}</th>
             <th>{{ iface.mtu }}</th>
             {% if 'UP' in iface.flags %}
-            <th>Enabled</th>
+            <th>{{ language_strings['DASHBOARD_ENABLED'] }}</th>
             {% else %}
-            <th>Disabled</th>
+            <th>{{ language_strings['DASHBOARD_DISABLED'] }}</th>
             {% endif %}
           </tr>
           {% endfor %}

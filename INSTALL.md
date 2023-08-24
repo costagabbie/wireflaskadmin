@@ -52,8 +52,9 @@ wireflask@localhost ~/ $ vim .env
 and place the following content, replacing where is needed
 ```
 WFADMIN_SECRET_KEY='INSERT YOUR SECRET KEY'
-WFADMIN_RECAPTCHA_API_KEY='INSERT YOUR RECAPTCHA API KEY'
-WFADMIN_RECAPTCHA_SITE_KEY='INSERT YOUR RECAPTCHA SITE KEY'
+WFADMIN_HCAPTCHA_ENABLE = Y
+WFADMIN_HCAPTCHA_API_KEY = ''
+WFADMIN_HCAPTCHA_SITE_KEY = ''
 WFADMIN_SQLALCHEMY_DATABASE_URI='mysql+pymysql://wfadmin:abcd1234@localhost:3306/wfadmin'
 WFADMIN_ENDPOINT_AUTOIP=N
 WFADMIN_REBUILD_STARTUP=N
@@ -62,6 +63,7 @@ WFADMIN_DAEMON_PORT=9929
 WFADMIN_REBUILD_STARTUP=N
 ```
 *Tip: You can symlink this file to ~/wireflaskadmin/daemon/.env this way you will have your configs in the same file.*
+*Warning: Set WFADMIN_HCAPTCHA_ENABLE to N if you don't want to enable hCaptcha when logging in, however if you set to Y you will need to provide the API key and the SITE key.
 ### For daemon
 Same as above.
 ## Creating the virtual environments
