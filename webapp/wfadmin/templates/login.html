@@ -37,6 +37,9 @@
                 </div>
             </fieldset>
             <div class="form-group">
+                {% if HCAPTCHA_ENABLED %}
+                    {{  hcaptcha }}
+                {% endif %}
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
         </form>

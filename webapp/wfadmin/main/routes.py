@@ -4,7 +4,7 @@ from subprocess import check_output
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from wfadmin import db, bcrypt, ip_ban
+from wfadmin import db, bcrypt, ip_ban,hcaptcha
 from wfadmin.config import Config
 from wfadmin.models import User, UserLogin, Endpoint, Peer
 from wfadmin.main.forms import LoginForm, EndpointForm, PeerForm
@@ -57,6 +57,9 @@ def login():
     ip_ban.add(ip=request.remote_addr,url=url_for('main.login'))
     form = LoginForm()
     if form.validate_on_submit():
+        if (not hcaptcha.verify()) and Config.HCAPTCHA_ENABLE:
+            flash('Invalid Captcha','error')
+            return redirect(url_for('main.login'))
         # If the form is being posted and passed the validations
         # we check if the user and password exist in the database
         user = User.query.filter_by(username=form.username.data).first()
